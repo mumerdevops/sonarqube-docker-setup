@@ -1,1 +1,2 @@
-This repository provides a step-by-step guide and the necessary configuration to run **SonarQube Community Edition** locally using Docker. This setup includes a persistent **PostgreSQL** database for production-like stability.
+This repository provides a step-by-step guide and the necessary configuration to run SonarQube Community Edition locally using Docker. 
+This setup includes a persistent **PostgreSQL** database for production-like stability.
