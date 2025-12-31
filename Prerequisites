@@ -1,0 +1,10 @@
+Before starting, you **must** run the following commands on your Linux host (Ubuntu/WSL2) to prevent the embedded Elasticsearch from crashing. These settings increase the memory map limits.
+
+```bash
+# Increase memory limits (Mandatory)
+sudo sysctl -w vm.max_map_count=524288
+sudo sysctl -w fs.file-max=131072
+
+# To make these changes permanent across reboots:
+echo "vm.max_map_count=524288" | sudo tee -a /etc/sysctl.conf
+echo "fs.file-max=131072" | sudo tee -a /etc/sysctl.conf
