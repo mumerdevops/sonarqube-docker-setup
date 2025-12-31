@@ -1,0 +1,54 @@
+1. System Optimization (Host Machine)
+These commands ensure your Linux kernel allows SonarQube's search engine (Elasticsearch) to run without crashing.
+# Increase memory map limits temporarily
+sudo sysctl -w vm.max_map_count=524288
+sudo sysctl -w fs.file-max=131072
+# Make changes permanent (survives a reboot)
+echo "vm.max_map_count=524288" | sudo tee -a /etc/sysctl.conf
+echo "fs.file-max=131072" | sudo tee -a /etc/sysctl.conf
+
+2. Docker Environment Fixes
+Since you are on Ubuntu 24.04, these commands fix the "distutils" and "daemon connection" errors.
+# Ensure you are using the correct Docker Desktop context
+docker context use desktop-linux
+# Install the modern Compose plugin (if not already present)
+sudo apt update
+sudo apt install docker-compose-v2
+# Install setuptools to provide legacy support for python scripts
+sudo apt install python3-setuptools
+
+3. Port & Process Management
+Used to clear ports (9000 or 9001) if they are blocked by other applications.
+# Find what process is using a specific port (e.g., 9000)
+sudo lsof -i :9000
+# Kill a process using its PID (replace 1234 with the actual PID)
+sudo kill -9 1234
+# Stop and remove all existing Docker containers to clear ports
+docker rm -f $(docker ps -aq)
+
+4. Running SonarQube
+These are the daily commands you will use to manage your SonarQube instannce
+# Start SonarQube in the background
+docker compose up -d
+# Check the status of the containers
+docker compose ps
+# View live logs (useful if the dashboard isn't loading)
+docker compose logs -f sonarqube
+# Stop the containers
+docker compose stop
+# Stop and remove containers/networks (keeps your data volumes)
+docker compose down
+
+5. Git & GitHub Setup
+Use these to upload your project to your new GitHub repository.
+# Initialize the folder as a Git repo
+git init
+# Add all files (README, docker-compose.yml, .gitignore)
+git add .
+# Commit the changes
+git commit -m "Initial SonarQube Docker setup"
+# Link to your GitHub (Replace URL with your actual repo link)
+git remote add origin https://github.com/yourusername/sonarqube-docker-setup.git
+# Push to GitHub
+git branch -M main
+git push -u origin main
